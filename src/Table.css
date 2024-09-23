@@ -1,0 +1,12 @@
+#head-table th {
+  border-bottom: 3px solid white;
+}
+
+.content td {
+  border-bottom: 0.5px solid white;
+}
+
+th,
+td {
+  padding: 15px;
+}

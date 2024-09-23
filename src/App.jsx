@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Table from "./Table";
+import "./App.css";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const apiKey = import.meta.env.VITE_CURRENCY_API_KEY;
+  const url = `https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${apiKey}&symbols=CAD,IDR,JPY,CHF,EUR,USD`;
+  // const test = {
+  //   test: "test",
+  // };
+
+  const [data, setData] = useState({});
+  useEffect(() => {
+    fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then((resData) => {
+        const { rates } = resData;
+        setData(rates);
+      });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div id="container">
+      <Table exchangeData={data} />
+      <ul>
+        <li>based currency is USD</li>
+        <li>
+          This page using{" "}
+          <a href="https://currencyfreaks.com/" style={{ color: "white" }}>
+            currencyfreaks.com
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
 }
 
-export default App
+export default App;
